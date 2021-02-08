@@ -355,6 +355,30 @@ E_{\rm after} = t\times E_{\rm before}
 .\ee
 In biological systems this function --- which is related to the index of refraction -- varies from one position to another. In fact, \ec{iobitr} can be generalized to include the transmission function. The 10,000 foot view is that one can model the observed intensities as a function of the transmission function, the PSF, and the true image and try to get the best fit to real or simulated data. This best fit about the transmission function contains valuable information about the tissues in the body.
 
+\section{AI Basics}
+
+Most problems in AI have some commonalities. Let's use the example of image reconstruction, which is what was discussed in the  \href{https://cmu.zoom.us/rec/share/2m9MSmtj6mbf7A_ueusvKnZIFItFV3HPI7QVJ7zlfSCCZGRzBt3iTHKs_fcKLJKx.3rNWZExDpw63YeTg}{seminar}. Consider a picture with 1000 pixels. The image is defined by a number in each pixel denoting the intensity of the image, so (let's keep things black and white, so there is no need for more than one number) with say 0 meaning the image is dark in that pixel and 255 meaning it is as bright as possible. These 1000 numbers -- the intensities of the image in each pixel -- are called {\bf features}. They are what are used by the AI to infer whatever you want to infer. Different AI problems will have different number of features. 
+
+One image is called a {\bf sample}. Typically, there are many different samples. The more samples you have, the easier it is to build (or {\bf train}) your algorithm. In fact, we usually take a subset of the samples and use them only for training the algorithm. This subset is called the {\bf training set}. Whatever algorithm we design from the training set, we then test on the remaining samples, called the {\bf test set}. If the results are about as good on the test set as on the training set, then we are good to go, and can apply the algorithm to new samples with some confidence as to how well it will perform. You will often hear people talk about the opposite though: {\bf over-training} or, very related {\bf over-fitting} the data. This happens when your algorithm tries to too hard to fit the training data and ends up fitting stuff there that is just noise or weird glitches. Then the algorithm will not work so well on new data.
+
+Much of AI is based on {\it supervised learning}. This is when every sample in the training set, at least, carries with it a {\bf target} or a {\bf label}. The target could be as complex as the the set of features. In the case of an image, it can be the true image. Or it could be something much simpler: e.g., specifying whether the image a cat or a dog.  
+
+However you design your algorithm, you almost have to introduce a way of quantifying how good it is, how well it does what it is supposed to do. This is typically called the {\bf cost function}. In the example of the image, the cost function could be
+\be
+C = \sum_{j=1}^{N_{samples}}\ \sum_{i=1}^{N_{pixels}} \left( I^{\rm Predicted,j }_i({\rm Features}) - I^{\rm true, j}_i\right)^2.\ee
+Here, the first term in parentheses is the prediction for the intensity of the image in pixel $i$ for sample $j$, which depends on all the features. This prediction is your AI algorithm: it inputs the features and outputs a prediction. The second term is the true image intensity in pixel $i$ for the $j$th sample, which we also call the target. Typically the prediction will depend on a lot of parameters and those parameters will be varied until the cost function is minimized.  
+
+\subsection{Simple Example: Linear Regression}
+
+Let's work out a simple example. Your target is $y$ and you are given a feature $x$. You believe that $y$ and $x$ are linearly related so that your model is
+\be
+y^{\rm predicted} = mx+b
+.\ee
+The goal of your algorithm is to take in all the samples you have, each of which contains a feature $x$ and a target $y$, and learn the coefficients of the model, in this case $m$ and $b$. Your cost function will be
+\be
+C = \sum_{i=1}^{N_{\rm samples}} \left( y_i - [mx_i+b]\right)^2.\ee
+You can actually do this minimization by hand, but generally computers can do things faster and generally the problems are not so easy to solve analytically. But you get the basic idea: you want to determine the parameters of the model by minimizing the cost function.
+
 \bibliography{refs}
  
  \appendix
