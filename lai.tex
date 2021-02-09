@@ -46,6 +46,7 @@
    \end{figure*}
 }
 
+
 \newcommand{\Spng}[2]{
     \begin{figure}[thbp]
     \sfig{Figures/#1.png}{0.65\columnwidth}
@@ -53,6 +54,14 @@
     \label{fig:#1}
     \end{figure}
 }
+\newcommand{\Sgif}[2]{
+    \begin{figure}[thbp]
+    \sfig{Figures/#1.gif}{0.65\columnwidth}
+    \caption{{\small #2}}
+    \label{fig:#1}
+    \end{figure}
+}
+
 \newcommand{\Rf}[1]{\ref{fig:#1}}
 \newcommand{\rf}[1]{\ref{fig:#1}}
 \newcommand{\ec}[1]{Eq.~(\ref{eq:#1})}
@@ -378,6 +387,27 @@ The goal of your algorithm is to take in all the samples you have, each of which
 \be
 C = \sum_{i=1}^{N_{\rm samples}} \left( y_i - [mx_i+b]\right)^2.\ee
 You can actually do this minimization by hand, but generally computers can do things faster and generally the problems are not so easy to solve analytically. But you get the basic idea: you want to determine the parameters of the model by minimizing the cost function.
+
+\section{Photometric Redshifts}
+
+The universe is expanding. This can be inferred from the fact that almost all galaxies are moving away from us and the farther away they are, the faster they are moving. One way to observe how fast galaxies are moving away from us is to observe the shift in energies of photons emitted in atomic transitions. These are called {\it emission lines}. For example, when an electron in hydrogen is in the $n=2$ state and drops down to the $n=1$ state, it emits a photon with an energy equal to 10.2 eV, corresponding to a wavelength equal to 121.5nm. If the atom is moving away from us, then then line will appear at a longer wavelength. I.e., it will be {\it redshifted}. Similarly, if a galaxy has a lot of hydrogen in it, then we will see a peak in emission at $\lambda=121.5\times(1+z)$nm, where $z$ is the redshift of emission.
+
+\Spng{redshift}{Example of a spectrum of a galaxy. All the emission lines have been shifted by a factor of $1+z=3.2$ so the galaxy is said to have a redshift of 2.2.}
+
+In cosmology, things moving away from us faster are farther away, so we can turn this around: obtain a galaxy's redshift and use it to determine how far away the galaxy is. This simple trick has the power to transform a 2D image of the sky to a full three-dimensional image. 
+
+Clearly then, it would be wonderful to obtain spectra of all galaxies in a given survey. E.g., the Dark Energy Survey has images of hundreds of millions of galaxies. a 3D map of all these galaxies would carry an enormous amount of information about the universe (including things like dark energy and dark matter). However, spectra take a long time to measure; the only reason DES has so many images is because they spend so little time on each galaxy. 
+
+Instead what DES and other imaging surveys such as the upcoming Vera Rubin Observatory survey) obtains is the flux in a given range of wavelengths, or actually a set of these fluxes in  different wavelengths bands, as depicted in Fig~\rf{photoz0}. Here, what is plotted on top is the relative {\it magnitude}. Magnitude is astronomy is defined such that larger numbers mean fainter objects. E.g., the sun has a magnitude of about -26.7 (very low), and the faintest thing you can see by eye is about +6.
+The formula is
+\be
+m = -2.5\log_{10}({\rm Flux}) + {\rm constant}
+.\ee
+Surveys find stars and galaxies as faint as 25th magnitude or even fainter. 
+
+\href{https://www.kaggle.com/c/photometric-redshift-estimation-2019}{Here} is a simple illustration of how the magnitudes in each band vary depending on how far away from us that galaxy happens to be. The challenge for photometric redshifts is to take the observed magnitudes in the different bands and estimate the redshift of the galaxy. These are called {\it photometric redshifts}.
+
+\Spng{photoz0}{Magnitudes change for a galaxy at redshift 0}
 
 \bibliography{refs}
  
