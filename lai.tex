@@ -414,14 +414,28 @@ Surveys find stars and galaxies as faint as 25th magnitude or even fainter.
  \appendix
  
   
- \section{AI Terms}\label{sec:unblind}
+ \section{AI Notes}\label{sec:unblind}
+ This section will have some random notes about the seminars, focusing on the AI methods. 
+ 
+ Some basic terms:
  \bee
  \item Cost Function
- \item Regularizer
+ \item Likelihood
+ \item Posterior
+ \item Bayesian Statistics
+ \item Prior
+ \item Classifier
+ \item Regularization
  \item Convolution
  \item Neural Network
- \item Generate new samples by shifting images or adding noise
- \eee
+  \eee
+  
+  ABCD Method: E.g., we've written a document and want to know how many typos are in it. Different people read it and report $N_i$ number of typos. Take 2 people. Break up each one into those in common and those not:
+  \bea
+  N_1&=&A+B\vs
+  N_2&=&A+C
+  \eea
+  We know how many person 1 missed and person 2 missed; we want to figure out how many both missed. If they are uncorrelated, $(B/A)\times C$ is the probability that person 1 finds typos times the amount he found. This is also called the fake-factor method.
  
  \section{Links to seminars}
  
