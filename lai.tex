@@ -398,6 +398,8 @@ In cosmology, things moving away from us faster are farther away, so we can turn
 
 Clearly then, it would be wonderful to obtain spectra of all galaxies in a given survey. E.g., the Dark Energy Survey has images of hundreds of millions of galaxies. a 3D map of all these galaxies would carry an enormous amount of information about the universe (including things like dark energy and dark matter). However, spectra take a long time to measure; the only reason DES has so many images is because they spend so little time on each galaxy. 
 
+\Spng{photoz0}{Magnitudes change for a galaxy at redshift 0}
+
 Instead what DES and other imaging surveys such as the upcoming Vera Rubin Observatory survey) obtains is the flux in a given range of wavelengths, or actually a set of these fluxes in  different wavelengths bands, as depicted in Fig~\rf{photoz0}. Here, what is plotted on top is the relative {\it magnitude}. Magnitude is astronomy is defined such that larger numbers mean fainter objects. E.g., the sun has a magnitude of about -26.7 (very low), and the faintest thing you can see by eye is about +6.
 The formula is
 \be
@@ -407,7 +409,39 @@ Surveys find stars and galaxies as faint as 25th magnitude or even fainter.
 
 \href{https://www.kaggle.com/c/photometric-redshift-estimation-2019}{Here} is a simple illustration of how the magnitudes in each band vary depending on how far away from us that galaxy happens to be. The challenge for photometric redshifts is to take the observed magnitudes in the different bands and estimate the redshift of the galaxy. These are called {\it photometric redshifts}.
 
-\Spng{photoz0}{Magnitudes change for a galaxy at redshift 0}
+
+\section{Particle Physics, Dark Matter, and the Large Hadron Collider}
+
+\href{https://cmu.zoom.us/rec/share/M26ZDfLR_giq7wdeln1DN4T9mGCBO9OBklY6bBRwkD2ivbNxnB-5sqsqdFGTrjEI.3Ug9tThx9aFomknL}{Link to Lecture; Passcode: DDd*6pN\^}
+
+Particle physics is the culmination of the age-old search for the fundamental constituents of matter. It has been {\bf too} successful over the last 60 years. Every experiment carried out is consistent with the following, which is part of what is now called the Standard Model:
+\bei
+\item Every material on Earth is comprised of electrons, neutrons, and protons.
+\item The electron is a fundamental, point particle
+\item Protons and neutrons are each comprised of 3 fundamental particles, quarks. The proton consist of 2 up quarks (each with electric charge $+2/3$) and one down quark (with electric charge $-1/3$). Neutrons are comprised of $udd$.
+\item Protons are electrically charged, which means they (and electrons) interact with photons. That means that whenever you have a lot of them, they tend to emit light. 
+\item Neutrons do not interact (much) with photons but the quarks inside protons and neutrons are bound together by the {\it strong force}, which is mediated by {\it gluons} (just as the electric force is mediated by photons.
+\eei
+There are other fundamental particles, but not too many, and some of them are almost copies of these 3 (e.g., the muon is almost identical to the electron except that it is more massive).
+
+In cosmology, there is overwhelming evidence for the presence of massive particles that are not seen, that is, do not emit light. These cannot be protons or electrons (which do emit light) or even free neutrons, because free neutrons decay into protons. This so-called {\it dark matter} cannot consist of any of the fundamental particles in the Standard Model. This is potentially a gift to the field of particle physics, because it is evidence that there is more left to discover. 
+
+The most direct way of discovering new particles is to build large accelerators that collide protons together. `Large' is required to accelerate them to high energy. High energy is needed because these new particles are likely at very large masses, much larger than the proton. When protons collide together they produce lots of particles (e.g., Fig.~\rf{lhcevent}), so not all of the energy goes into a single particle. Roughly, the amount of energy in a collision is 1 TeV = $10^{12}$ eV, and again roughly, they can produce particles only a fraction of that mass. Many heavy particles decay quickly and many are stable for the short time it takes them to leave the detector traveling at close to the speed of light. There are some particles though that might decay on time scales just right so that you could observe a {\it displaced} vertex: that is, an indication of 2 new particles being produced from a point displaced from the center.
+
+The Dark QCD model is one of many (really, many, many!) models for dark matter. It is based on the following observation:
+\bei
+\item We know how much dark matter is needed to explain observations
+\item The total mass density is about 6 times larger than the mass density in protons and neutrons and electrons
+\item Build a model wherein the number of dark matter particles is roughly equal to the number of protons but the mass of the dark matter particle is 6 times heavier.
+\eei
+The Dark QCD model does this by postulating the existence (this means ``make up'') of another type of gluon that binds together dark particles. The stuff in the Dark QCD sector has to interact weakly with the stuff in the Standard Model in order for the masses to be about the same and for the number of them to be about the same. It is this interaction that is then exploited so that in the LHC you have a process like
+\be
+p + p \rightarrow (SM) + X  \rightarrow (SM) + SM
+.\ee
+Here the final SM stands for particles in the standard model that might leave tracks in the detectors at the LHC.
+
+
+\Sfig{lhcevent}{The tracks left in the ATLAS detector by particles produced in a single collision of two energetic protons accelerated in the Large Hadron Collider.}
 
 \bibliography{refs}
  
@@ -420,6 +454,9 @@ Surveys find stars and galaxies as faint as 25th magnitude or even fainter.
  Some basic terms:
  \bee
  \item Cost Function
+ \item Features
+ \item Target
+ \item Linear Regression
  \item Likelihood
  \item Posterior
  \item Bayesian Statistics
