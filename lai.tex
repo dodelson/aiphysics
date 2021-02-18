@@ -374,7 +374,7 @@ Much of AI is based on {\it supervised learning}. This is when every sample in t
 
 However you design your algorithm, you almost have to introduce a way of quantifying how good it is, how well it does what it is supposed to do. This is typically called the {\bf cost function}. In the example of the image, the cost function could be
 \be
-C = \sum_{j=1}^{N_{samples}}\ \sum_{i=1}^{N_{pixels}} \left( I^{\rm Predicted,j }_i({\rm Features}) - I^{\rm true, j}_i\right)^2.\ee
+C = \sum_{j=1}^{N_{samples}}\ \sum_{i=1}^{N_{pixels}} \left( I^{\rm Predicted,j }_i({\rm Features}) - I^{\rm true, j}_i\right)^2.\eql{cost}\ee
 Here, the first term in parentheses is the prediction for the intensity of the image in pixel $i$ for sample $j$, which depends on all the features. This prediction is your AI algorithm: it inputs the features and outputs a prediction. The second term is the true image intensity in pixel $i$ for the $j$th sample, which we also call the target. Typically the prediction will depend on a lot of parameters and those parameters will be varied until the cost function is minimized.  
 
 \subsection{Simple Example: Linear Regression}
@@ -385,7 +385,7 @@ y^{\rm predicted} = mx+b
 .\ee
 The goal of your algorithm is to take in all the samples you have, each of which contains a feature $x$ and a target $y$, and learn the coefficients of the model, in this case $m$ and $b$. Your cost function will be
 \be
-C = \sum_{i=1}^{N_{\rm samples}} \left( y_i - [mx_i+b]\right)^2.\ee
+C = \sum_{i=1}^{N_{\rm samples}} \left( y_i - [mx_i+b]\right)^2.\eql{costt}\ee
 You can actually do this minimization by hand, but generally computers can do things faster and generally the problems are not so easy to solve analytically. But you get the basic idea: you want to determine the parameters of the model by minimizing the cost function.
 
 \section{Photometric Redshifts}
@@ -443,6 +443,51 @@ Here the final SM stands for particles in the standard model that might leave tr
 
 \Sfig{lhcevent}{The tracks left in the ATLAS detector by particles produced in a single collision of two energetic protons accelerated in the Large Hadron Collider.}
 
+
+\section{Bayesian Analysis}
+
+Consider the following simple model for a data point:
+\be
+D = s + n
+\ee
+where $D$ is the observed data point, $s$ is the signal you are trying to extract and $n$ is noise. Here, we will assume that the noise is gaussian distributed with mean 0 and variance $\sigma^2$, so
+\be
+P(n) = \frac{1}{\sqrt{2\pi\sigma^2}}\, e^{-n^2/2\sigma^2}.\ee
+But $n=D-s$, so we have the following probability for obtaining the data given a particular value of the signal:
+\be
+P(D|s) =  \frac{1}{\sqrt{2\pi\sigma^2}} \, e^{-(D-s)^2/2\sigma^2}.\eql{like}\ee
+The number $s$ here is what we are trying to determine and so it is a parameter in the model. This conditional probability then tells us how likely it is that we will get $D$ given the parameter value $s$. It is called the {\it likelihood function}.
+
+Bayes' Theorem says we are not really interested in the likelihood; rather we care much more about what the value of the parameter $s$ is given the data. That is, we want
+\be
+P(s|D).\ee
+To get this, you can use an elementary fact from probability theory:
+\bea
+P(x\cup y) &=& P(x|y) P(y)\vs
+&=& P(y|x) P(x) 
+\eea
+where the probability on the left is the probability that both $x$ and $y$ are true. Equating the two right-hand sides of this and using instead of $x,y$ the things that interest us $D,s$ leads to
+\be
+P(s|D) = \frac{
+P(D|s)}{ P(s)}{P(D)
+}
+.\ee
+This is exactly what we want and it is what you will plotted in physics papers often: the probability distribution of a given parameter. From this you can obtain the best fit value (where $P(s|D)$, called the {\it posterior}) peaks, the region that is excluded at 95\% confidence level, etc. There are two things that connect the posterior to the likelihood, one is trivial and the other is crucial. The trivial thing is the denominator, which seems very hard to predict. Fortunately, we simply don't care about it; it does not depend on the thing we are interested in $s$ and so serves only as a normalization factor. And, anyway, we already know how to normalize probabilities (the integrated probability must be 1). The numerator though is crucial. It is called the {\it prior}. It represents our expectations of what the signal is likely to be {\it before} we obtain the data.
+
+If you don't think the prior is important, consider the following example. Consider the genetic disease, Aceruloplasminemia. It is related to abnormal levels of iron in your brain and you don't want to have it. Symptoms can start occurring when someone reaches the age of 20. One of the symptoms is blurry vision. Suppose, you are experienced blurry vision; that will be the data. You want to know if you have the disease (that will be the signal). Now almost all people with this disease get blurry vision. So, $P(D|s) \simeq 1$. However, the probability that you have the disease $P(s)$ is very small; even in Japan, where it is most prevalent, only 1 in 2 million people have it. Let's use that for an estimate of $P(s)=5\times 10^{-7}$. What about blurry vision? Roughly half the people in the world have it. Therefore, if you get blurry vision, instead of worrying that you have Aceruloplasminemia, do the following calculation:
+ \be
+ P(s|D) = \frac{5\times 10^{-7} \times 1}{0.5} = 10^{-6}.\ee
+ There is one in a million chance you have the disease (for reference, the mortality rate for someone my age is roughly 1\%).
+ 
+ We can generalizes to more than one data point. Consider the case where you take lots of values of $y$, each of which is generated from the same signal and the same noise distribution. So each time the signal will be the same but the noise will be different. Then, the likelihood is simply the product of all $N$ measurements:
+ \be
+ \mathcal{L} = \frac{1}{(2\pi\sigma^2)^{N/2}}\, \exp\left\{ - \sum_{i=1}^N \frac{(D_i-s)^2}{2\sigma^2} \right\} 
+ \ee
+To find the best fit value of $s$ simply find the value of $s$ that maximizes the posterior (the likelihood times the prior). Suppose the prior were uniform, so that the posterior was equal to the likelihood. Then, maximizing the posterior would correspond to minimizing the negative of the $\ln$ likelihood or minimizing
+\be
+\hat s = {\rm arg\ min}_s \left( \sum_{i=1}^N \frac{(D_i-s)^2}{\sigma^2}  \right)
+.\ee
+In this case, when the noise is drawn from the same distribution for all measurements, maximizing the likelihood then is equivalent to using the cost function we identified in \ec{cost} and \ec{costt}.
 \bibliography{refs}
  
  \appendix
@@ -476,7 +521,10 @@ Here the final SM stands for particles in the standard model that might leave tr
  
  \section{Links to seminars}
  
- \href{https://cmu.zoom.us/rec/share/2m9MSmtj6mbf7A_ueusvKnZIFItFV3HPI7QVJ7zlfSCCZGRzBt3iTHKs_fcKLJKx.3rNWZExDpw63YeTg}{Physics-constrained Computational Imaging, Laura Waller} Passcode: 0Zy@h+G6
-
+ \bei
+\item  \href{https://cmu.zoom.us/rec/share/2m9MSmtj6mbf7A_ueusvKnZIFItFV3HPI7QVJ7zlfSCCZGRzBt3iTHKs_fcKLJKx.3rNWZExDpw63YeTg}{Physics-constrained Computational Imaging, Laura Waller} Passcode: 0Zy@h+G6
+ \item \href{https://cmu.box.com/s/s16xxmvut99n1fl73yooxq7kwxe6sgfo}{Karri DiPetrillo}, LHC Searches
+\item \href{https://cmu.zoom.us/rec/share/tHqLS0TsN0H399MCClI3fv2_dWaraXiiAAA5R3grrEWrA-4OZjclNI4GP_njf_TW.mPFln3zm5t0xyHP7}{Bayes Statistics}, Class Recording;  Passcode: Ta\^EEV2w 
+\eei
 \end{document}
 
