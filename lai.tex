@@ -488,6 +488,55 @@ To find the best fit value of $s$ simply find the value of $s$ that maximizes th
 \hat s = {\rm arg\ min}_s \left( \sum_{i=1}^N \frac{(D_i-s)^2}{\sigma^2}  \right)
 .\ee
 In this case, when the noise is drawn from the same distribution for all measurements, maximizing the likelihood then is equivalent to using the cost function we identified in \ec{cost} and \ec{costt}.
+
+
+\section{Cosmological Simulations}
+
+The goal of cosmological simulations is to start from initial conditions and evolve the system forward using the laws of physics to obtain a universe that looks like ours today. This sounds hard, but we are helped greatly by the fact that most of the mass in the universe is in the form of dark matter. Dark matter has the following properties:
+\bei
+\item It is likely {\it cold}; i.e., the initial velocities are very small, with no thermal contribution, and there are no relativistic effects
+\item They obey Newton's laws of motion
+\item The only force that acts on them is gravity ... due to all the other dark matter particles
+\eei
+
+It turns out that gravity alone can start from initial conditions and produce a universe that looks pretty similar to our universe. The basic idea is that early on the universe was pretty smooth, so that the density varied from one part of the sky to another by only a factor of 1 part in 10,000 at most. However, the slightly over-dense regions over the course of billions of years attracted more and more matter until eventually the over-densities became nonlinear and large structures such as galaxies, stars, and planets formed.
+
+\subsection{N-Body simulations}
+
+\bee
+\item Compute the force on all particles. In principle $\vec F_i = -Gm_i\sum_j \frac{m_j (\vec r_i-\vec r_j)}{\vert \vec r_i-\vec r_j\vert^3}$
+\item Update the particles' velocity: $\vec v_{t+1} = \vec v_t + (\vec F_i/m_i)\times \Delta t$
+\item Update the particles' positions: $\vec x_{t+1} = \vec x_t + \vec v \times \Delta t$
+\item Go back to step 1
+\eee
+In practice, Step 1 would take order $N^2$ calculations. Typically, $N\simeq 10^{10}$ so this is not feasible. There are a variety of ways around this but the simplest is to use a grid or a mesh and is called Particle-Mesh. There are still $N$ particles, but the system allocates the density of each particle to nearby grid sites. Then each grid site has a density associated with it, and Poisson's equation can be solved by first taking the Fourier transform and then solving the algebraic equation:
+\be
+k^2\tilde\Phi = 4\pi G \tilde\rho.\ee
+Armed with the potential, one can take the inverse Fourier transform and obtain the force on the grid sites and then extrapolate to each particle's position. Since a fast Fourier transform (FFT) takes only $N\ln(N)$ steps, the calculation is no longer $N^2$. The bottom line though is that there is a resolution limit, dictated in part by the grid size.
+
+\subsection{Hydrodynamic Simulations}
+
+To make realistic galaxies, you must include ordinary matter, called {\it baryons}. Usually, then, there are multiple components:
+\bee
+\item dark matter, relatively easy to track, as above
+\item atoms of various types (hydrogen, helium, carbon, etc. in different ionization states
+\item Radiation Field
+\item stars, also easy to track since they don't interact so can be treated as dark matter. The hard part is designing algorithms for when they form and when they explode.
+\eee
+The physics of 2 is actually pretty well-known. The reactions that produce different ionization states can be coded in and are temperature-dependent. It depends a lot on 3, though, which is very difficult to model. The baryons -- even if divide into different elements and ionization states -- are driven by known equations. One example of the way baryons are implemented is on a grid, such each cell has a density (of each species), temperature, and velocity. The two fundamental equations of hydrodynamics are the continuity equation 
+\be
+\dot\rho + \nabla\cdot(\rho\vec v) = 0.
+\ee
+and the velocity equation:
+\be
+\frac{\partial\vec v}{\partial t} + \vec v\cdot\nabla \vec v + \frac{\nabla p}{\rho} = \vec g
+.\ee
+Solving this numerically is very difficult (it's a career) and typically hydro codes can take ten times longer to run than N-Body codes. So a high, resolution hydro cosmological simulation is very expensive (can take 6 months on a supercomputer). Finding ways to learn about high-resolution detail while carrying a low-resolution simulation would clearly be immensely valuable.
+
+
+
+
+
 \bibliography{refs}
  
  \appendix
