@@ -534,9 +534,49 @@ and the velocity equation:
 Solving this numerically is very difficult (it's a career) and typically hydro codes can take ten times longer to run than N-Body codes. So a high, resolution hydro cosmological simulation is very expensive (can take 6 months on a supercomputer). Finding ways to learn about high-resolution detail while carrying a low-resolution simulation would clearly be immensely valuable.
 
 
+\section{(Quantum) Cryptography}
 
+Any message can be delivered in base 2, a series of 0's and 1's. Consider a simple 3-bit message:
+\be
+M = 0\,0\, 1
+\ee
+Suppose I want to send this message to Alice but I don't want anybody who intercepts it to be able to understand it. So, we initially exchange a {\it key}:
+\be
+K = 1\, 0\, 1
+.\ee
+This is just a random choice but the important thing is that only the two of us know the key. To encrypt my message, I send the bit-added sum of $M$ and $K$:
+\be
+C = M+K = 1\, 0\, 0
+.\ee
+Now, Alice gets my message and uses that fact that in this weird bit-addition $X+X=0$ for any $X$, so she computes
+\be
+C+K = M+ K+K = M
+\ee
+or
+\be
+C+K = 0\, 0\,1
+\ee
+the correct answer!
 
+What is Eve (the eavesdropper) steals our code? Then, there is no way of ensuring our messages will be safe. Quantum cryptography provides a way out. We start by considering 4 states, most easily understandable in terms of the Pauli spin operators. The first 2 states are eigenvalues of the $\sigma_z$ operator and give $\pm1/2$ when you measure the $z$-component of spin. 
+\bea
+0: && Z:|0\rangle
+\vs
+1: &&Z:|1\rangle\eea
+The 3 ``columns'' here denote: the value of the qbit; the basis; and the state in the $Z$ basis.
+Now add two other states that are linear combinations of $\sigma_z$ such that they are eigenstates of $\sigma_x$:
+\bea
+0: && X:|+\rangle\equiv (1/\sqrt{2})\left( |0\rangle + |1\rangle\right)
+\vs
+1: && X:|-\rangle\equiv (1/\sqrt{2})\left( |0\rangle - |1\rangle\right)
+\eea
+The first column is the value of the qbit, so the first line here is a way of transmitting the exact same information (0) as in the first line above. But, in this case, the state is different: it's a linear combination of the $\pm$ z-states. These states are egienstates of the $\sigma_x$ operator, so you get `0` for sure if you measure the first of these and 1 for sure if you measure the second.
 
+Now I will send Alice a state but she needs to know which basis to measure in. E.g., if I send her the first state $|0\rangle$, and she measures in the $X$ basis, there is a 50-50 chance she will incorrectly get 1 instead of 0.Or if I send her $|+\rangle$ and she incorrectly measures in the z-basis, she has a 50-50 chance of (incorrectly getting 1. So, she needs the basis for each bit. What she does is guess. So suppose I sent her:
+\be
+|+\rangle\, |0\rangle\, |0\rangle
+\ee
+ and want her to measure in the $X,Z,Z$ basis. If she does, then she will get 0,0,0. She (and nobody else either) though knows what basis to measure in, so she guesses $X,X,X$. She will get the first state right, but only have a 50-50 chance of getting the 2nd and 3rd states right. She calls me up over a public line and tells me what basis she used. I tell her that she can trust only the measurement on the first bit. We can then use that bit (or if we did this for lots more bits, all the bits that I tell her she can use) as our key. Will Eve know our key? No! All she knows is the basis in which one should have measured the first bit. But she does not know the value of this bit. Of course, if she also intercepted our measurement, there is a chance that she will have measured that first bit using the correct basis, but if you do this for lots of bits, clearly she will get some wrong. She will not have the key.
 \bibliography{refs}
  
  \appendix
