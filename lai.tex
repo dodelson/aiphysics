@@ -46,7 +46,13 @@
    \end{figure*}
 }
 
-
+\newcommand{\Sjpg}[2]{
+    \begin{figure}[thbp]
+    \sfig{Figures/#1.jpg}{0.65\columnwidth}
+    \caption{{\small #2}}
+    \label{fig:#1}
+    \end{figure}
+}
 \newcommand{\Spng}[2]{
     \begin{figure}[thbp]
     \sfig{Figures/#1.png}{0.65\columnwidth}
@@ -577,6 +583,184 @@ Now I will send Alice a state but she needs to know which basis to measure in. E
 |+\rangle\, |0\rangle\, |0\rangle
 \ee
  and want her to measure in the $X,Z,Z$ basis. If she does, then she will get 0,0,0. She (and nobody else either) though knows what basis to measure in, so she guesses $X,X,X$. She will get the first state right, but only have a 50-50 chance of getting the 2nd and 3rd states right. She calls me up over a public line and tells me what basis she used. I tell her that she can trust only the measurement on the first bit. We can then use that bit (or if we did this for lots more bits, all the bits that I tell her she can use) as our key. Will Eve know our key? No! All she knows is the basis in which one should have measured the first bit. But she does not know the value of this bit. Of course, if she also intercepted our measurement, there is a chance that she will have measured that first bit using the correct basis, but if you do this for lots of bits, clearly she will get some wrong. She will not have the key.
+ 
+ 
+ 
+\section{Dust} 
+% \subsection{Extinction}
+ 
+ Dust absorbs and scatters radiation so along a given line of sight, the observed intensity is suppressed by the optical depth
+ \be
+ I_\lambda = I_{\lambda 0}\,e^{-\tau_\lambda}
+ .\eql{dtau}\ee
+ Roughly, $\tau_\lambda\sim \int ds n_D\sigma_\lambda$, the integral along the line of sight of the number density of dust multiplied by its cross section, which depends on wavelength. 
+ 
+ The wavelength dependence will be very important; the basic idea is that if the wavelength of light is smaller than the size of the dust grain, then it will feel the full geometric cross-section. For a single grain with a single size, then, the cross-section will become constant as $\lambda\rightarrow 0$ and will fall off at larger wavelengths. There are actually two cross sections here, one for scattering and one for absorption. They both have this same general property but fall of differently at large wavelengths. It is useful to normalize them by the geometric cross section $\pi a^2$ where $a$ is the radius of the grain. Then, focusing on scattering,
+ \bea
+ \frac{\sigma_{\rm scatter}}{\pi a^2} &=& \begin{cases}
+ 1 & \lambda \ll 2\pi a\cr
+\left( \frac{2\pi a}{\lambda}  \right)^4  & \lambda \gg 2\pi a\cr
+\end{cases}
+%\vs
+%\frac{\sigma_{\rm abs}}{\pi a^2} &=& \begin{cases}
+% 1 & \lambda \ll 2\pi a\cr
+%\left( \frac{2\pi a}{\lambda}  \right)^2 & \lambda \gg  2\pi a\cr
+%\end{cases}.
+\eql{dusts}\eea
+The scattering cross-section is familiar as Rayleigh scattering: the sky is blue because blue light is scattered by the atmosphere but red light has a much lower cross section so does not and just arrives directly from the Sun.  				
+ 
+ 
+ 
+ However, we do not observe extinction curves that look like this: i.e., when we plot $\tau_\lambda$ (or some other quantity used in its stead) as a function of wavelength, we see the optical depth continue to rise as the wavelength gets shorter and the fall-off at large wavelengths is only $\lambda^{-1}$ instead of $\lambda^{-4}$. Both of these facts speak to the presence of dust grains with a wide variety of sizes. The reason why the cross section continues to increase as the wavelength gets small is that smaller and smaller grains continue to contribute. The reason why the fall-off is much slower than $\lambda^{-4}$ is because very large grains exist and they do scatter even relatively long wavelength photons. 
+ 
+% There are a variety of ways to recast the optical depth. One of the most popular is to recall that magnitudes are defined as
+% \be
+% m \equiv -2.5\log_{10} (I)\,+ \, {\rm constant}
+%  .\ee
+%  Therefore the ratio of two intensities (or fluxes) can be written as $I_1/I_2 = 10^{-0.4(m_1-m_2)}$. Therefore, the log of \ec{dtau} is
+%  \be
+% 0.4\left(  m_{\lambda} - m_{\lambda,0} \right) = 0.434\tau_\lambda
+% .\ee
+% So the change is magnitude of an object due to extinction is simply
+% \be
+% \Delta m = 1.086 \tau_\lambda  \equiv A_\lambda
+% .\ee
+% This is equivalent to the definition
+% \be
+% A_{\lambda} \equiv -2.5\,\log_{10}\left(\frac{I_{\lambda}}{I_{\lambda 0}}\right)
+% .\ee
+% The extinction parameter $A_\lambda$ obviously has the same dependence as $\tau_\lambda$ on the dust density, size, and composition along the line of sight. 
+% 
+% It is useful to separate out the amplitude of $A_\lambda$ (which depends mostly on how much dust there is along the line of sight) and the shape (which depends on the size and composition of the grains). One definition along these lines is 
+% \be
+% E(B-V) \equiv A_B-A_V
+% \ee
+% where $B$ and $V$ are the blue ($4400\AA$) and violet ($5500\aa$) filters. Since V-band is sensitive to longer wavelength radiation, we expect its optical depth to be smaller than B-band. Therefore, $A_B$ should be larger than $A_V$, and $E(B-V)$ is positive. The bigger it is, the larger is the effect of reddening.
+% 
+%Typical extinction curves (e.g. Fig 21.1 in \cite{2011piim.book.....D} and Fig. 7.1 in \cite{2006agna.book.....O}) show that $A_\lambda\rightarrow0$ as $\lambda\rightarrow\infty$ and increases roughly as $\lambda^{-1}$ as one moves to shorter wavelengths. Another way to describe extinction is the ratio of the extinction to the reddening:
+%\be
+%R_V \equiv \frac{A_V}{E(B-V)}
+%.\ee
+%Values of $R_V$ range from about 2 to 5 in our Galaxy, with an average of $3.1$. So if a given sight line has very little reddening but lots of extinction, it will have a large value of $R_V$. This ratio does not depend on the amount of dust along the line of sight. Regions with large $R_V$ (little reddening) must absorb about as much red as blue light. This means the large red wavelengths are still smaller than the sizes of the grains, so these regions much have very large grains. In contrast, a region (such as the SMC) with small $R_V$ much have a large difference in scattering of red and blue light, so must be dominated by small grains that do not affect the red light.
+%
+%There is an observed correlation between the dust and the gas, so that regions with more gas also have more dust. This manifests itself in the extinction relation:
+%\be
+%A_V = 0.53\,\frac{N_H}{10^{21}\,{\rm cm}^{-2}}
+%\eql{avnh}\ee
+%where $N_H$ is the {\it column density} of hydrogen, $\int ds n_H$, the integral along the line of sight of the hydrogen density. I've normalized to $10^{21}\,{\rm cm}^{-2}$, because the typical density might be 1 per cm$^3$, extending out hundreds of parsec.
+%
+%In principle, \ec{avnh} empowers us to infer something about the column density and cross section of dust. Suppose that dust particles have mass density $\rho_D= 1$ gm cm$^{-3}$ and a typical size of 0.1$\mu$m. Then the mass per length squared of dust is of order $4\pi N_D\rho_D a^3/3$ where $N_D$ is the dust column density. Meanwhile the  absorbtion cross section in the V-band might be taken to be $\pi a^2 $. So we then expect
+%\bea
+%\tau_V &\simeq & A_V \simeq 
+%N_D\sigma_D
+%\vs
+%&=&
+%N_D\pi a^2\,
+%\vs
+%&=&
+%\frac{N_D}{3.2\times10^{9}\, cm^{-2}}
+%.\eea
+%This means that
+%\be
+%N_D \simeq 1.7\times10^{-12} N_H.
+%\ee
+%But the mass of a single one of these grains is much larger than a hydrogen atom: $M_D=4\pi \rho_D a^3/3=4\times 10^{-15}$ gm or $2.5\times 10^9$ larger than the proton mass. This means that the total mass in dust is about 0.2\% that in hydrogen.
+%
+%This simple estimate suggests that dust has a much lower density than hydrogen (by a factor of about $10^{12}$) but grains might typically be much larger, with masses a billion times larger.
+
+%
+%Fig.~23.11 in \cite{2011piim.book.....D} shows that when $\lambda$ is of order $0.55\mu$m [i.e., the V-band], the extinction cross-section is of order $5\times 10^{-22}$ cm$^2$. Therefore,
+%\bea
+%\tau_V &=& N_D\sigma_V 
+%\vs
+%&\simeq& 0.5 \frac{N_H}{10^{21}\,{\rm cm}^{-2}}
+%\vs
+%&=&
+%N_D 5\times 10^{-22} {\rm cm}^2
+%\eea
+%which means that the dust column density is of order
+%\be
+%N_D \simeq N_H
+%\ee
+%
+%
+%The reddening is also correlated with the hydrogen column density, observed to follow
+%\be
+%E(B-V) = 0.17\,\frac{N_H}{10^{21}\,{\rm cm}^{-2}}
+%\ee
+%(which of course could be inferred from the average from of $R_V$). 
+%
+% 
+% \section{Detecting Dust: Quantifying Extinction}
+ Two historical places where this mattered:
+ The Hubble constant was vastly over-estimated (Fig.~\rf{hubble}) because distances were underestimated.
+ \Sjpg{hubble}{Hubble's initial estimate; the slope of the line is about 500 km/sec/Mpc. Note that the y-axis is mis-labeled, but more importantly this estimate is wrong by about a factor of 7.}
+ And then, there is the sad story of BICEP. Andre Linde, one of the founders of inflation, was one of many physicists who were  \href{https://www.youtube.com/watch?v=ZlfIVEy_YOA}{led to believe} that cosmologists had discovered gravitational waves hiding in subtle polarization patterns in the microwave radiation. It turned out to be dust from our galaxy.
+ 
+ 
+ Consider three methods:
+ \begin{itemize}
+ \item{\bf Pair Method} Observe two stars of the same type that therefore have the same intrinsic spectrum. One of the stars must have negligible obscuration along the line of sight. The differences between the two spectra empower us to determine the extinction along the line of sight to the second star.
+ \item{\bf Line Ratios}
+ Measurements of the fluxes from lines, especially those produced from the same upper atomic levels, can be predicted very precisely and are mostly independent of the physical conditions such as temperature and density. One example is $[S \,II]$, singly ionized silicon. The $^2P$ state can decay into either the $^4S$ state with a wavelength of about $0.41\mu$m or to the $^2D$ state with a wavelength of $1.03\mu$m. The latter is very long wavelength so there is little extinction, so the extinction close to the B and V bands can be inferred from the ratios of these lines. Technically, measuring a line with very long wavelength is challenging because of limitations of CCS's and atmospheric emission lines getting in the way.
+ 
+ Easier then is to stick with hydrogen; e.g., starting from $n=7$ and measuring the ratio of the $7\rightarrow 3$ line (Paschen) with $7\rightarrow 2$ (Balmer), one again at roughly a micron and the other at about $0.4\mu$m. These are better because they are stronger but suffer the same issue of long wavelength. Ratios of Balmer lines (e.g., $H\alpha/H\beta$ or $H\beta/H\gamma$) can be seen from Table 4.1 in \cite{2006agna.book.....O} to be relatively insensitive to the thermal properties of the region and are safely in the optical. So these get a single number that quantifies the overall level of extinction. Finally, one can use the ratio of the flux in a line such as $H\beta$ with the free-free emission in the long wavelength regime, where dust does not absorb the radiation.
+ 
+ \item{\bf Morphology}
+ If we are interested in HII regions, then there is an interesting physical effect that offers insight into the amount of dust present: light from the star scatters off dust grains and propagates to us. That light has a different morphology as a function of distance from the star than does the emission from the gas itself that we have focused on earlier. 
+ 
+ As a simple example, consider a spherical region with a central star ionized out to its Stromgren radius $r_s$. Then the flux that we see along a given line of sight for $H\beta$ say is
+ \be
+ I_{H\beta}(d) = 2\int_0^{r_{max}} j_{H\beta}\, ds
+ \ee
+ where $d$ is the projected distance between the line of sight and the star; $s$ is the distance along the line of sight; $r_{\rm max}$ is the largest value of $s$ within the Stromgren sphere, apparently set by $r_s^2=r_{\rm max}^2+d^2$; and the factor of 2 accounts for the integral from $-r_{\rm max}$ to zero. If the medium is uniform within the Stromgren sphere in temperature, density, and ionization, then the integral is trivial, and
+ \be
+ I_{H\beta}(d) = 2 j_{H\beta} \sqrt{r_s^2-d^2}
+ .\ee
+ On the other hand, the emission from reflected starlight falls off the further one gets from the star. The emission per volume per time  per solid angle is
+ \be
+ j_\nu = F_*\,\frac{n_D \sigma_\nu}{4\pi}
+ \ee
+ where $n_D$ is the number density of dust grains and $\sigma_\nu$ is the cross section for dust to scatter the radiation at that frequency. The flux from the star falls off as $r^2$, so the intensity observed along a line of sight will be
+ \bea
+ I_{D} &=& 2\,\frac{n_D \sigma_\nu}{4\pi}\,\int_0^{r_{\rm max}}\, ds\, \frac{L_*}{4\pi(s^2+d^2)}
+\vs
+&=&
+\frac{n_D \sigma_\nu L_*}{8\pi^2 d}\,
+\tan^{-1}\left(\frac{s}{d}\right)\Bigg\vert_0^{r_{\rm max}}\vs
+&=&
+\frac{n_D \sigma_\nu L_*}{8\pi^2 d}\,
+\tan^{-1}\left(\frac{\sqrt{r_s^2-d^2}}{d}\right).
+ \eea
+ 
+ Expressed in terms of the angular distance from the center of the HII region, these two signals scale as
+ \bea
+ I_{H\beta} &\propto& \sqrt{\theta_s^2-\theta^2}
+ \vs
+ I_{D} &\propto& \frac{\tan^{-1}\sqrt{\theta_s^2/\theta^2 - 1}}{\theta}
+ .\eea
+ These two different morphologies are depicted in Fig.~\rf{morph} and apparently offer an opportunity to extract information about the density and cross section of dust.
+ 
+ \Sfig{morph}{The morphology of two signals from an HII region: emission by gas and scattered starlight by dust.}
+ 
+ 
+ \end{itemize}
+
+ \section{Convolutional Neural Networks}
+ 
+ \bee
+ \item {\bf Traditional neural network}, each pair of layers connected by a weight matrix $W_{ia}$ where $i$ ranges over all possible nodes of the output and $a$ all nodes in the input. E.g., if the input is a 2D image, the nodes might be the value of the intensity (or even 3 values for 3 colors) in each pixel. Let's use 1D as an example. Call the input $I$ and the output $O$. Then,
+ \be
+ O_i = \sum_a W_{ia} I_a
+ .\ee
+ If there are the same number of inputs and outputs, $N$, then the number of operations need to determine the full set of outputs is $N^2$. There are also $N^2$ elements in the weight matrix that need to be optimized (for example by minimizing a cost function that uses the final output layer). 
+ \item {\bf Convolution:} This involves a very specific form of the weight matrix. Again assuming the number of inputs and outputs is the same:
+ \be
+ W_{ia} = \tilde W_{i-k} \qquad {\rm unless}\, |i-a|<k.\ee
+ Here $k$ is typically a very small integer
+ \item equivariance, convolution preserves outputs under translation but not rotation. Need tricks like ``learned invariances''
+ \eee
+ 
 \bibliography{refs}
  
  \appendix
