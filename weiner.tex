@@ -1,0 +1,127 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{graphicx}
+\newcommand{\problem}[1]{%\addtocounter{problemc}{1}
+\item {#1}
+}
+\newcommand{\probl}[1]{\label{#1}}
+\def\be{\begin{equation}}
+\def\ee{\end{equation}}
+\def\bea{\begin{eqnarray}}
+\def\eea{\end{eqnarray}}
+\newcommand{\vs}{\nonumber\\}
+\def\across{a^\times}
+\def\tcross{T^\times}
+\def\ccross{C^\times}
+\newcommand{\ec}[1]{Eq.~(\ref{eq:#1})}
+\newcommand{\eec}[2]{Eqs.~(\ref{eq:#1}) and (\ref{eq:#2})}
+\newcommand{\Ec}[1]{(\ref{eq:#1})}
+\newcommand{\eql}[1]{\label{eq:#1}}
+\newcommand{\sfig}[2]{
+\includegraphics[width=#2]{#1}
+        }
+\newcommand{\sfigr}[2]{
+\includegraphics[angle=270,origin=c,width=#2]{#1}
+        }
+\newcommand{\sfigra}[2]{
+\includegraphics[angle=90,origin=c,width=#2]{#1}
+        }
+\newcommand{\Sfig}[2]{
+   \begin{figure}[thbp]
+   \begin{center}
+    \sfig{#1.pdf}{0.5\columnwidth}
+    \caption{{\small #2}}
+    \label{fig:#1}
+     \end{center}
+   \end{figure}
+}
+\newcommand{\Spng}[2]{
+   \begin{figure}[thbp]
+   \begin{center}
+    \sfig{#1.png}{0.9\columnwidth}
+    \caption{{\small #2}}
+    \label{fig:#1}
+     \end{center}
+   \end{figure}
+}
+\newcommand\dirac{\delta_D}
+\newcommand{\rf}[1]{\ref{fig:#1}}
+\newcommand\rhoc{\rho_{\rm cr}}
+\newcommand\zs{D_S}
+\newcommand\dts{\Delta t_{\rm Sh}}
+\newcommand\zle{D_L}
+\newcommand\zsl{D_{SL}}
+\newcommand\sh{\gamma}
+\newcommand\surb{\mathcal{S}}
+\newcommand\psf{\mathcal{P}}
+\newcommand\spsf{\sigma_{\rm PSF}}
+\newcommand\bei{\begin{itemize}}
+\newcommand\eei{\end{itemize}}
+
+%SetFonts
+
+%SetFonts
+
+
+\title{Weiner Filter}
+%\author{The Author}
+%\date{}							% Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+\section{Gaussian Likelihood}
+Suppose the data is modeled as signal plus noise, each of which is drawn from a Gaussian distribution.
+Then,
+\be
+\mathcal{L} = P(d|C_s,C_n) = (2\pi C)^{-1/2} \exp\left\{-\frac12 \frac{d^2}{C} \right\}\eql{intl}\ee
+where $C=C_s+C_n$ and $d^2/C$ is shorthand for $d^tC^{-1} d$.
+'This leads to a maximum likelihood estimate for the power spectrum $C_s$ by minimizing the likelihood. Moving to Fourier space and assuming everything is diagonal leads to
+\be
+\mathcal{L} \propto \Pi_l  (C_l+N_l)^{-2l+1/2} e^{-\sum_m\, |d_{lm}|^2/2(C_l+N_l)}.
+\ee
+Maximizing this with respect to $C_l$ leads to an estimator
+\be
+\hat C_l = \sum_m \frac{|d_{lm}|^2}{2l+1} - N_l.\eql{powint}\ee
+%\subsection{}
+
+The likelihood in \ec{intl} implicitly integrated over all pixel values $s_{lm}$. The full conditional probability (using Bayes) is
+\be
+P(s,C_s|d,C_n) \propto \, (2\pi C_s)^{-1/2}\, \exp\left\{-\frac12 \frac{[d-s]^2}{C_n} \right\}
+e^{-s^2/2C_s}.
+\ee
+When this is maximized, we find
+\bea
+s &=& \frac{C_s}{C_s+C_n}\, d\vs
+C_s &=& s^2
+\eea
+or more carefully in Fourier space
+\bea
+\hat s_{lm} &=& \frac{C_l}{C_l+N_l}\, d_{lm}\vs
+\hat C_l &=& \sum_{m} \frac{|s_{lm}|^2}{2l+1}
+.\eea
+We immediately see the problem: the maximum value of the likelihood occurs at values of $s$ such that
+\be
+\langle \hat C_l\rangle = \frac{C_l}{C_l+N_l}\, C_l
+\ee
+lower than the true value. This is the well-known issue with the Weiner filter:
+%In Fourier space, the estimate of the map from data $d_{lm}$ can be obtained using the Weiner filter:
+%\begin{equation}
+%\hat s_{lm} = \frac{C_l}{C_l+N_l}\, d_{lm}
+%\end{equation}
+%where $C_l$ is the power spectrum of the signal and $N_l$ of the noise. We are assuming that $d=s+n$, each of which has mean zero, so
+%\begin{equation}
+%\langle d_{lm} d^*_{l'm'} \rangle = \delta_{ll'}\delta_{mm'}\, \left( C_l+ N_l\right).
+%\end{equation}
+%From this, it is easy to see that 
+%\begin{equation}
+%\langle \hat s_{lm}\hat s^*_{l'm'}\rangle = \delta_{ll'}\delta_{mm'}\, S_l
+%\end{equation}
+%with the power spectrum of the estimated signal 
+%\begin{equation}
+%S_l = \frac{C_l}{C_l+N_l}\, C_l.\end{equation}
+on small scales where noise kicks in, the estimated power spectrum is suppressed.
+
+To picture consider the simplest case possible of one data point with known $C_n$. Fig.~\rf{l2} shows the likelihood for a specific value of the data point. The likelihood peaks at $C_s=s=0$ simply because it is plausible that the data point is all noise. The degeneracy direction though allows for signal and a non-zero signal as large as 3 is shown to be possible (albeit with a probability 10 times smaller than at the maximum). When integrating over all possible $s$, one would get \ec{powint}, which in this example would estimate $\hat C_s=3C_n$. So the maximum likelihood in the 2D space is at a much different point, a lower point for $C_s$, than the marginalized 1D maximum likelihood, which is shown in Fig.~\rf{like1d}. Fig.~\rf{l2} actually hides the main reason for this, the much larger area of the lower likelihood points at larger values of $(s,C_s)$ since $C_s$ is shown logarithmically.
+\Spng{l2}{Likelihood contour in the $s,C_s$ plane for a single data point $d=2C_n^{1/2}$.}
+\Spng{like1d}{Marginalized likelihood in 1d for the same exact data point as depicted in Fig.~\rf{l2}.}
+
+\end{document}  
