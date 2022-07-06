@@ -120,7 +120,10 @@ lower than the true value. This is the well-known issue with the Weiner filter:
 %S_l = \frac{C_l}{C_l+N_l}\, C_l.\end{equation}
 on small scales where noise kicks in, the estimated power spectrum is suppressed.
 
-To picture consider the simplest case possible of one data point with known $C_n$. Fig.~\rf{l2} shows the likelihood for a specific value of the data point. The likelihood peaks at $C_s=s=0$ simply because it is plausible that the data point is all noise. The degeneracy direction though allows for signal and a non-zero signal as large as 3 is shown to be possible (albeit with a probability 10 times smaller than at the maximum). When integrating over all possible $s$, one would get \ec{powint}, which in this example would estimate $\hat C_s=3C_n$. So the maximum likelihood in the 2D space is at a much different point, a lower point for $C_s$, than the marginalized 1D maximum likelihood, which is shown in Fig.~\rf{like1d}. Fig.~\rf{l2} actually hides the main reason for this, the much larger area of the lower likelihood points at larger values of $(s,C_s)$ since $C_s$ is shown logarithmically.
+To understand this, consider the simplest case possible of one data point with known $C_n$. Fig.~\rf{l2} shows the likelihood for a specific value of the data point $d=2C_N^{1/2}$. The likelihood peaks at $C_s=s=0$ simply because it is plausible that the data point is all noise. In fact, the maximum value of the likelihood has $C_s=s=0$ as long as $d^2<2C_n$. The degeneracy direction though allows for signal and a non-zero signal as large as 3 is shown to be possible (albeit with a probability 10 times smaller than at the maximum). When integrating over all possible $s$, one would get \ec{powint}, which in this example would estimate $\hat C_s=3C_n$. 
+
+
+So the maximum likelihood in the 2D space is at a much different point, a lower point for $C_s$, than the marginalized 1D maximum likelihood, which is shown in Fig.~\rf{like1d}. Fig.~\rf{l2} gives a hint for the main reason for this, the much larger area of the lower likelihood points at larger values of $(s,C_s)$.
 \Spng{l2}{Likelihood contour in the $s,C_s$ plane for a single data point $d=2C_n^{1/2}$.}
 \Spng{like1d}{Marginalized likelihood in 1d for the same exact data point as depicted in Fig.~\rf{l2}.}
 
