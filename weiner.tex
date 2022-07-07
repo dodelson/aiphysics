@@ -91,7 +91,7 @@ e^{-s^2/2C_s}.
 When this is maximized, we find
 \bea
 s &=& \frac{C_s}{C_s+C_n}\, d\vs
-C_s &=& s^2
+C_s &=& s^2\eql{2dlike}
 \eea
 or more carefully in Fourier space
 \bea
@@ -120,11 +120,45 @@ lower than the true value. This is the well-known issue with the Weiner filter:
 %S_l = \frac{C_l}{C_l+N_l}\, C_l.\end{equation}
 on small scales where noise kicks in, the estimated power spectrum is suppressed.
 
-To understand this, consider the simplest case possible of one data point with known $C_n$. Fig.~\rf{l2} shows the likelihood for a specific value of the data point $d=2C_N^{1/2}$. The likelihood peaks at $C_s=s=0$ simply because it is plausible that the data point is all noise. In fact, the maximum value of the likelihood has $C_s=s=0$ as long as $d^2<2C_n$. The degeneracy direction though allows for signal and a non-zero signal as large as 3 is shown to be possible (albeit with a probability 10 times smaller than at the maximum). When integrating over all possible $s$, one would get \ec{powint}, which in this example would estimate $\hat C_s=3C_n$. 
+Let's go back to the 2 equations for $(s,C_s$) and find the minimum by solving. Substituting for $s$ leads to
+\be
+1 = d^2 \,\frac{C_s}{(C_s+C_n)^2}.\ee
+The minimum is obtained by solving the quadratic equation
+\be
+C_s^2 + C_s\left[ 2C_n -d^2\right] +C_n^2 = 0.
+\ee
+If $d^2<4C_n$, then there is no minimum for positive $C_s$ so the max like is at $s=C_s=0$. If $d$ is larger than this, then the minimum is at 
+\be
+C_s = \frac12 \left[ d^2-2C_n\right] \pm \frac{d}2\sqrt{d^2-4C_n}
+.\ee
+So in our example with $d=2C_n^{1/2}$, this leads to a maximum likelihood at $C_s=1$ and $s=1$.
 
+To understand this, consider the simplest case possible of one data point with known $C_n$. Fig.~\rf{l2.5} shows the likelihood for a specific value of the data point $d=2.5C_N^{1/2}$. The likelihood peaks at $C_s=4;s=1$. In fact, The degeneracy direction though allows for much larger signal and a non-zero signal as large as 4.5 is shown to be possible (albeit with a much lower probability than at the maximum). When integrating over all possible $s$, one would get \ec{powint}, which in this example would estimate $\hat C_s=5.25C_n$. 
+So the maximum likelihood in the 2D space is at a much different point, a lower point for $C_s$, than the marginalized 1D maximum likelihood. Fig.~\rf{l2.5} gives a hint for the main reason for this, the much larger area of the lower likelihood points at larger values of $(s,C_s)$.
+\Spng{l2.5}{Likelihood contour in the $s,C_s$ plane for a single data point $d=2.5C_n^{1/2}$. The maximum posterior point in the 2D parameter space is marked and has lower values of $s,C_s$ than the 1D marginalized values.}
+%\Spng{like1d}{Marginalized likelihood in 1d for the same exact data point as depicted in Fig.~\rf{l2}.}
 
-So the maximum likelihood in the 2D space is at a much different point, a lower point for $C_s$, than the marginalized 1D maximum likelihood, which is shown in Fig.~\rf{like1d}. Fig.~\rf{l2} gives a hint for the main reason for this, the much larger area of the lower likelihood points at larger values of $(s,C_s)$.
-\Spng{l2}{Likelihood contour in the $s,C_s$ plane for a single data point $d=2C_n^{1/2}$.}
-\Spng{like1d}{Marginalized likelihood in 1d for the same exact data point as depicted in Fig.~\rf{l2}.}
+The situation is even more extreme when the signal to noise are comparable. When $d=1$, Fig~\rf{l1} shows that the maximum likelihood point is quite far from the 1D maxima.
+\Spng{l1}{Same as Fig~\rf{l2.5} except $d=1$.}
+
+\section{Multiple pixels}
+
+Let's generalize in the simplest way possible: by adding another pixel. First, let's fix $C_s=C_n$. In this case, the maximum likelihood solution is at $s_i=d_i/2.$ When $C_s$ is left free, then the 3D maximum likelihood point is at 
+\bea
+s_i &=& d_i \frac{C_s}{C_s+C_n}\vs
+C_s &=& \frac{\sum_i s_i^2}{2}
+\eea
+Plugging in leads to an equation that determines $C_s$, defining $\bar d^2\equiv \sum_i d_i^2/2$,
+\be
+C_s =  \left(\frac{C_s}{C_s+C_n} \right)^2\bar d^2.\ee
+This reduces to another quadratic equation
+\be
+C_s^2 + C_s\left[ 2C_n - \bar d^2 \right] + C_n^2=0\ee
+with solution
+\be
+C_s = \frac12 \left[ \bar d^2-2C_n\right] \pm \frac{\bar d}2\sqrt{\bar d^2-4C_n}
+.\ee
+Fig.~\rf{3d} shows the result in this case. The maximum 3D likelihood is at $s=0$ and $C_s$ as small as possible, but the marginalized likelihood is again at $\bar d^2-C_n$. In the example shown, $d=[1.14,1.38]$, so $\bar d^2=1.6$, so the 1D best fit should be $C_s=0.6$ and it is.
+\Spng{3d}{Two pixels drawn from $C_s=C_n=1$; the data here is $1.14,1.38$ leading to a 3D maximum likelihood at very los $s,C_s$ but a 1D max at $C_s=0.6$.}
 
 \end{document}  
