@@ -37,12 +37,23 @@
 \newcommand{\Spng}[2]{
    \begin{figure}[thbp]
    \begin{center}
-    \sfig{#1.png}{0.9\columnwidth}
+    \sfig{#1.png}{0.7\columnwidth}
     \caption{{\small #2}}
     \label{fig:#1}
      \end{center}
    \end{figure}
 }
+\newcommand{\Stwo}[3]{
+   \begin{figure}[thbp]
+   \begin{center}
+    \sfig{#1.png}{0.45\columnwidth}
+    \sfig{#2.png}{0.45\columnwidth}
+    \caption{{\small #3}}
+    \label{fig:#1}
+     \end{center}
+   \end{figure}
+}
+
 \newcommand\dirac{\delta_D}
 \newcommand{\rf}[1]{\ref{fig:#1}}
 \newcommand\rhoc{\rho_{\rm cr}}
@@ -90,7 +101,7 @@ e^{-s^2/2C_s}.
 \ee
 When this is maximized, we find
 \bea
-s &=& \frac{C_s}{C_s+C_n}\, d\vs
+s &=& \frac{C_s}{C_s+C_n}\, d\eql{swein}\\
 C_s &=& s^2\eql{2dlike}
 \eea
 or more carefully in Fourier space
@@ -120,6 +131,21 @@ lower than the true value. This is the well-known issue with the Weiner filter:
 %S_l = \frac{C_l}{C_l+N_l}\, C_l.\end{equation}
 on small scales where noise kicks in, the estimated power spectrum is suppressed.
 
+
+\subsection{Single Pixel Example}
+
+To understand this, consider the simplest case possible of one data point with known $C_n$. There are several ways to implement this:
+\bei
+\item {\it Traditional Weiner Filter:} This implements \ec{swein} assuming the $C_s$ is known. Let's see how this works for 100 draws, how closely the Weiner filtered signal matches the true signal. Fig.~\rf{swein} shows that it performs well as expect, no matter what the signal to noise ratio. The estimated value of the signal has a mean equal to the true value and the spread is given by noise, independent of how large the signal to noise is.
+\Spng{swein}{Histogram of the Weiner filter estimate of the signal minus the true signal for 100 draws. Different histograms show two different values of signal to noise. In each case, the Weiner filter is constructed by using the true values of $C_s$ and $C_n$.}
+However, while the signal at the map level is correct, if we were to try to estimate the power spectrum from this map, we would fail.
+\Spng{wpow}{A histogram of the estimated variance of the Weiner filtered map in this 1-pixel case: $\hat C_s=s_{Weiner}^2$ compared to the true value of $C_s$. In both cases, the estimated power is low on average. The mean ratio is 0.5 and 0.7 in the $C_s=(1,4)C_n$ cases.}
+Fig.~\rf{wpow} shows that the extracted variance is smaller than the true variance. Note that the situation improves as the signal to noise gets larger, with the mean estimated variance about 50\% closer to the truth in the $C_s=4C_n$ case.
+\item {\it Correct Power Spectrum Estimate:} We know how to estimate the variance correctly. We simply use the equivalent of \ec{powint}, in this case simply: $\hat C_s=d^2-C_n$.
+\Spng{pow}{Same as Fig.~\rf{wpow} but this time using the estimate in \ec{powint}. The mean of the estimates are close to one in each case.}
+Fig.~\rf{pow} shows that this estimate recovers the true power on average, albeit with significant noise.
+\eei
+
 Let's go back to the 2 equations for $(s,C_s$) and find the minimum by solving. Substituting for $s$ leads to
 \be
 1 = d^2 \,\frac{C_s}{(C_s+C_n)^2}.\ee
@@ -133,7 +159,10 @@ C_s = \frac12 \left[ d^2-2C_n\right] \pm \frac{d}2\sqrt{d^2-4C_n}
 .\ee
 So in our example with $d=2C_n^{1/2}$, this leads to a maximum likelihood at $C_s=1$ and $s=1$.
 
-To understand this, consider the simplest case possible of one data point with known $C_n$. Fig.~\rf{l2.5} shows the likelihood for a specific value of the data point $d=2.5C_N^{1/2}$. The likelihood peaks at $C_s=4;s=1$. In fact, The degeneracy direction though allows for much larger signal and a non-zero signal as large as 4.5 is shown to be possible (albeit with a much lower probability than at the maximum). When integrating over all possible $s$, one would get \ec{powint}, which in this example would estimate $\hat C_s=5.25C_n$. 
+Fig.~\rf{ss} shows the maximum likelihood values of $s$ and $C_s$ for 100 different experiments. Not surprisingly, neither is estimated very well. There is an unknown component of noise that messes up even the estimate of $s$. In fact, in the majority of throws, the maximum likelihood of both $s$ and $C_s$ is close to zero (the uniform prior sets $0.01<C_s<10$). 
+\Stwo{ss}{cs}{Left: maximum likelihood value of $s$ vs. true values. Most of the time, even in the case where $C_s=4C_n$, the maximum likelihood estimate is at $s=0$. Right: Maximum likelihood value of $C_s$ for the same 100 draws; again the maximum likelihood value often assumes the data is all noise.}
+
+Fig.~\rf{l2.5} shows the likelihood for a specific value of the data point $d=2.5C_N^{1/2}$. The likelihood peaks at $C_s=4;s=1$.  The degeneracy direction though allows for much larger signal and a non-zero signal as large as 4.5 is shown to be possible (albeit with a much lower probability than at the maximum). When integrating over all possible $s$, one would get \ec{powint}, which in this example would estimate $\hat C_s=5.25C_n$. 
 So the maximum likelihood in the 2D space is at a much different point, a lower point for $C_s$, than the marginalized 1D maximum likelihood. Fig.~\rf{l2.5} gives a hint for the main reason for this, the much larger area of the lower likelihood points at larger values of $(s,C_s)$.
 \Spng{l2.5}{Likelihood contour in the $s,C_s$ plane for a single data point $d=2.5C_n^{1/2}$. The maximum posterior point in the 2D parameter space is marked and has lower values of $s,C_s$ than the 1D marginalized values.}
 %\Spng{like1d}{Marginalized likelihood in 1d for the same exact data point as depicted in Fig.~\rf{l2}.}
@@ -159,6 +188,9 @@ with solution
 C_s = \frac12 \left[ \bar d^2-2C_n\right] \pm \frac{\bar d}2\sqrt{\bar d^2-4C_n}
 .\ee
 Fig.~\rf{3d} shows the result in this case. The maximum 3D likelihood is at $s=0$ and $C_s$ as small as possible, but the marginalized likelihood is again at $\bar d^2-C_n$. In the example shown, $d=[1.14,1.38]$, so $\bar d^2=1.6$, so the 1D best fit should be $C_s=0.6$ and it is.
-\Spng{3d}{Two pixels drawn from $C_s=C_n=1$; the data here is $1.14,1.38$ leading to a 3D maximum likelihood at very los $s,C_s$ but a 1D max at $C_s=0.6$.}
+
+The bottom line is that, in this low signal to noise case, the Weiner filtered map using $C_s$ equal to its true value would yield $s=d/2$ and therefore the estimated power spectrum from the Weiner filtered map would be $\bar s^2=0.25\bar d^2 = 0.4$, much smaller than the true value.
+
+\Spng{3d}{Two pixels drawn from $C_s=C_n=1$; the data here is $1.14,1.38$ leading to a 3D maximum likelihood at very low $s,C_s$ but a 1D max at $C_s=0.6$.}
 
 \end{document}  
